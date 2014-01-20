@@ -41,9 +41,16 @@ public class DagbladetShowBuilder implements ShowBuilder {
                 String currentShowHref = element.attr("href");
                 if (!currentShowHref.equalsIgnoreCase("#serier")) {
                     Show show = new Show();
-                    show.setUrl(new URL(element.baseUri() + currentShowHref));
+                    StringBuilder showRootUrlBuilder = new StringBuilder();
+                    showRootUrlBuilder.append(element.baseUri()).append(currentShowHref);
+                    show.setUrl(new URL(showRootUrlBuilder.toString()));
                     show.setName(element.text());
                     shows.add(show);
+
+                    StringBuilder episodeUrlBuilder = new StringBuilder();
+                    episodeUrlBuilder.append(element.baseUri()).append("?op=ContentTail&t=q&vid=")
+                            .append(show.getName())
+                            .append("&inapp=");
                 }
 
             }
