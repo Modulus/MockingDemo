@@ -1,6 +1,7 @@
 package org.aineko.core;
 
 import java.net.URL;
+import java.util.List;
 
 /**
  * Created by JohnSigvald on 20/01/14.
@@ -8,6 +9,16 @@ import java.net.URL;
 public class Show {
     private URL url;
     private String name;
+
+    List<Episode> episodes;
+
+    public List<Episode> getEpisodes() {
+        return episodes;
+    }
+
+    public void setEpisodes(List<Episode> episodes) {
+        this.episodes = episodes;
+    }
 
     public String getName() {
         return name;
@@ -30,6 +41,7 @@ public class Show {
         return "Show{" +
                 "url=" + url +
                 ", name='" + name + '\'' +
+                ", episodes=" + episodes +
                 '}';
     }
 }
