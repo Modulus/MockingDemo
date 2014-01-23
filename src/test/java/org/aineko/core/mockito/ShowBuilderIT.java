@@ -11,7 +11,7 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
 /**
- * Created by JohnSigvald on 20/01/14.
+ * Created by Modulus on 20/01/14.
  */
 public class ShowBuilderIT {
 
@@ -20,7 +20,9 @@ public class ShowBuilderIT {
 
         ShowBuilder builder = new ShowBuilder().
                 withUrl("http://www.dbtv.no").
-                withShowCollectionId("#serier").withReader(new HtmlReader());
+                withShowCollectionId("#serier").
+                withReader(new HtmlReader());
+
         List<Show> shows = builder.build();
         assertTrue(shows.size() >= 17);
         for(Show show : shows){

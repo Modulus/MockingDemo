@@ -15,7 +15,6 @@ import java.util.List;
 import static org.aineko.core.TestData.*;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
 import static org.mockito.Matchers.contains;
 import static org.mockito.Matchers.matches;
 import static org.mockito.Mockito.mock;
@@ -49,10 +48,7 @@ public class ShowBuilderParamTest {
             e.printStackTrace();
         }
 
-
-
         Object[][] data = new Object[][] { { shows.get(0) }, { shows.get(1) }, { shows.get(2) }};
-
 
         return Arrays.asList(data);
     }

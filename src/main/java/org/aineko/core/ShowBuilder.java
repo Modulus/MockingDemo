@@ -15,7 +15,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created by JohnSigvald on 20/01/14.
+ * Created by Modulus on 20/01/14.
  */
 public class ShowBuilder {
     private String url;
@@ -49,26 +49,10 @@ public class ShowBuilder {
             for (Element element : showAnchors) {
                 String currentShowHref = element.attr("href");
                 if (!currentShowHref.equalsIgnoreCase("#serier")) {
-                    Show show = new Show();
-                    StringBuilder showRootUrlBuilder = new StringBuilder();
-                    showRootUrlBuilder.append(url).append(currentShowHref);
-                    show.setUrl(new URL(showRootUrlBuilder.toString()));
-                    show.setName(element.text());
-
-
-                    String showDetails = getShowDetails(url,element.attr("href").substring(1));
-
-                    try {
-                        List<Episode> episodes = getEpisodes(showDetails);
-                        show.setEpisodes(episodes);
-                        shows.add(show);
-                    }
-                    catch (JsonSyntaxException e){
-                        e.printStackTrace();
-                    }
-                    catch(Exception e){
-                        e.printStackTrace();
-                    }
+                    Show show = extractShowInfo(element, currentShowHref);
+                    List<Episode> episodes = extractEpisodeInfo(element);
+                    show.setEpisodes(episodes);
+                    shows.add(show);
                 }
 
             }
@@ -78,6 +62,32 @@ public class ShowBuilder {
             return shows;
         }
 
+    }
+
+    protected List<Episode> extractEpisodeInfo(Element element) {
+        String showDetails = getShowDetails(url,element.attr("href").substring(1));
+        List<Episode> episodes = new ArrayList<Episode>();
+        try {
+            episodes = getEpisodes(showDetails);
+        }
+        catch (JsonSyntaxException e){
+            e.printStackTrace();
+        }
+        catch(Exception e){
+            e.printStackTrace();
+        }
+        finally {
+            return episodes;
+        }
+    }
+
+    protected Show extractShowInfo(Element element, String currentShowHref) throws MalformedURLException {
+        Show show = new Show();
+        StringBuilder showRootUrlBuilder = new StringBuilder();
+        showRootUrlBuilder.append(url).append(currentShowHref);
+        show.setUrl(new URL(showRootUrlBuilder.toString()));
+        show.setName(element.text());
+        return show;
     }
 
     protected List<Episode> getEpisodes(String showDetails) throws MalformedURLException {
