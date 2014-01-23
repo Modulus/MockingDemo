@@ -23,6 +23,7 @@ import java.util.*;
 public class DagbladetShowBuilder  {
     private String url;
     private String divId;
+    private HtmlReader reader;
 
     public DagbladetShowBuilder withUrl(String url) {
         this.url = url;
@@ -34,11 +35,18 @@ public class DagbladetShowBuilder  {
         return this;
     }
 
+    public DagbladetShowBuilder withReader(HtmlReader reader){
+        this.reader = reader;
+        return this;
+    }
+
 
     public List<Show> build() {
         List<Show> shows = new ArrayList<Show>();
         try {
-            Document doc = getDocument("http://www.dbtv.no");
+            String baseUri = "http://www.dbtv.no";
+            String rootHtml = reader.read(baseUri);
+            Document doc = Jsoup.parse(rootHtml);
             Element seriesDiv = doc.getElementById("series");
             Elements showAnchors = seriesDiv.getElementsByTag("a");
 
@@ -47,12 +55,12 @@ public class DagbladetShowBuilder  {
                 if (!currentShowHref.equalsIgnoreCase("#serier")) {
                     Show show = new Show();
                     StringBuilder showRootUrlBuilder = new StringBuilder();
-                    showRootUrlBuilder.append(element.baseUri()).append(currentShowHref);
+                    showRootUrlBuilder.append(baseUri).append(currentShowHref);
                     show.setUrl(new URL(showRootUrlBuilder.toString()));
                     show.setName(element.text());
 
 
-                    String showDetails = getShowDetails(element.baseUri(),element.attr("href").substring(1));
+                    String showDetails = getShowDetails(baseUri,element.attr("href").substring(1));
 
                     try {
                     Gson gson = new Gson();
@@ -99,28 +107,17 @@ public class DagbladetShowBuilder  {
                 .append(showName)
                 .append("&inapp=");
 
-        StringBuilder content = new StringBuilder();
+        String content = "";
 
         try {
-            URL url  = new URL(episodeUrlBuilder.toString());
-            BufferedReader reader = new BufferedReader(new InputStreamReader(url.openStream()));
-
-            String line;
-            while((line = reader.readLine()) != null){
-                content.append(line);
-            }
-            reader.close();
+            content =  reader.read(episodeUrlBuilder.toString());
         } catch (MalformedURLException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
             e.printStackTrace();
         }
 
+        return content;
 
-        return content.toString();
     }
 
-    protected Document getDocument(String url) throws IOException {
-        return Jsoup.connect(url).get();
-    }
+
 }
