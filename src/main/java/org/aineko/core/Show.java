@@ -4,7 +4,7 @@ import java.net.URL;
 import java.util.List;
 
 /**
- * Created by JohnSigvald on 20/01/14.
+ * Created by Modulus on 20/01/14.
  */
 public class Show {
     private URL url;
