@@ -16,7 +16,7 @@ import static org.junit.Assert.assertTrue;
 public class ShowBuilderIT {
 
     @Test
-    public void test(){
+    public void testShowBuilder(){
 
         ShowBuilder builder = new ShowBuilder().
                 withUrl("http://www.dbtv.no").
