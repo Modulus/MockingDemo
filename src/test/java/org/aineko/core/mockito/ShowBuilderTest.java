@@ -11,9 +11,13 @@ import org.junit.Test;
 import org.mockito.internal.matchers.Contains;
 
 import java.net.MalformedURLException;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
+import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 import static org.mockito.Matchers.anyString;
 import static org.mockito.Matchers.contains;
 import static org.mockito.Matchers.matches;
@@ -40,8 +44,18 @@ public class ShowBuilderTest {
         when(reader.read(contains("&vid=s1"))).thenReturn(getEpisodeSeries1Markup());
         when(reader.read(contains("&vid=s2"))).thenReturn(getEpisodeSeries2Markup());
         when(reader.read(argThat(new ContainsMatcher("&vid=s3")))).thenReturn(getEpisodeSeries3Markup());
+        when(reader.read(matches("exception"))).thenThrow(new MalformedURLException("Mocked exception"));
 
         builder = new ShowBuilder();
+    }
+
+    @Test
+    public void testBuildReaderException(){
+        builder.withReader(reader).
+                withShowCollectionId("exception").
+                withUrl("http://wwww.vgtv.no");
+
+        assertTrue(builder.build().isEmpty());
     }
 
 

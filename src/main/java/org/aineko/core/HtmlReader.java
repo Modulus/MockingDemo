@@ -34,6 +34,8 @@ public class HtmlReader {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        return content.toString();
+        finally {
+            return content.toString();
+        }
     }
 }
