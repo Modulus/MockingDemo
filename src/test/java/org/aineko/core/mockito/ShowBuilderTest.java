@@ -3,8 +3,12 @@ package org.aineko.core.mockito;
 import org.aineko.core.HtmlReader;
 import org.aineko.core.Show;
 import org.aineko.core.ShowBuilder;
+import org.hamcrest.BaseMatcher;
+import org.hamcrest.Description;
+import org.hamcrest.Matcher;
 import org.junit.Before;
 import org.junit.Test;
+import org.mockito.internal.matchers.Contains;
 
 import java.net.MalformedURLException;
 import java.util.List;
@@ -35,7 +39,7 @@ public class ShowBuilderTest {
         when(reader.read(matches("http://www.dbtv.no"))).thenReturn(getRootMarkup());
         when(reader.read(contains("&vid=s1"))).thenReturn(getEpisodeSeries1Markup());
         when(reader.read(contains("&vid=s2"))).thenReturn(getEpisodeSeries2Markup());
-        when(reader.read(contains("&vid=s3"))).thenReturn(getEpisodeSeries3Markup());
+        when(reader.read(argThat(new ContainsMatcher("&vid=s3")))).thenReturn(getEpisodeSeries3Markup());
 
         builder = new ShowBuilder();
     }
@@ -55,7 +59,7 @@ public class ShowBuilderTest {
         //Verify Reader's read method called 4 times in total
         verify(reader, times(4)).read(anyString());
 
-        //Verify Reader's read method called 3 times for each of the 3 shows
+        //Verify Reader's read method called 3 times for each of the shows
         verify(reader, times(1)).read("http://www.dbtv.no?op=ContentTail&t=q&vid=s1&inapp=");
         verify(reader, times(1)).read("http://www.dbtv.no?op=ContentTail&t=q&vid=s2&inapp=");
         verify(reader, times(1)).read("http://www.dbtv.no?op=ContentTail&t=q&vid=s3&inapp=");
@@ -64,6 +68,28 @@ public class ShowBuilderTest {
     }
 
 
+    private class ContainsMatcher extends BaseMatcher<String> {
+        private  String text = "&vid=s3";
 
+        public ContainsMatcher(String text){
+            this.text = text;
+        }
 
+        @Override
+        public boolean matches(Object o) {
+
+                return ((String)o).contains(text);
+        }
+
+        @Override
+        public void describeMismatch(Object o, Description description) {
+            description.appendValue(o).appendText("Does not match ").appendValue(text);
+
+        }
+
+        @Override
+        public void describeTo(Description description) {
+            description.appendText("Should match ").appendValue(text);
+        }
+    }
 }
