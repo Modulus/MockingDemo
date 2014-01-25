@@ -1,4 +1,4 @@
-package org.aineko.core.mockito;
+package org.aineko.core;
 
 import org.aineko.core.HtmlReader;
 import org.aineko.core.Show;
