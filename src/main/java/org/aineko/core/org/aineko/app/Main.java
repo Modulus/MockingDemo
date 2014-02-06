@@ -16,6 +16,7 @@ public class Main {
                 .appendUrl("http://www.dbtv.no")
                 .appendShowCollectionId("series")
                 .appendShowTag("a")
+                .appendIgnoreAttr("#serier")
                 .appendReader(new HtmlReader());
 
         List<Show> shows = builder.build();

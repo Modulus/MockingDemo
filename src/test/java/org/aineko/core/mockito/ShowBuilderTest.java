@@ -12,6 +12,7 @@ import org.mockito.internal.matchers.Contains;
 
 import java.net.MalformedURLException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
@@ -63,11 +64,19 @@ public class ShowBuilderTest {
     @Test
     public void testBuild() throws MalformedURLException {
         builder.appendReader(reader).
-                appendShowCollectionId("#serier").
+                appendShowCollectionId("series").
                 appendShowTag("a").
+                appendIgnoreAttr("#serier").
                 appendUrl("http://www.dbtv.no");
 
         List<Show> shows = builder.build();
+
+        /**
+         * Print for debug
+         * */
+        for(Show show : shows){
+            System.out.println(show);
+        }
 
         //Verify Reader's read method calld once with http://www.dbtv.no
         verify(reader, times(1)).read("http://www.dbtv.no");
@@ -81,6 +90,8 @@ public class ShowBuilderTest {
         verify(reader, times(1)).read("http://www.dbtv.no?op=ContentTail&t=q&vid=s3&inapp=");
 
         assertEquals(shows.size(), 3);
+
+
     }
 
 

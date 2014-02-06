@@ -32,6 +32,7 @@ public class ShowBuilderSpyTest {
         when(spyBuilder.appendShowCollectionId(anyString())).thenCallRealMethod();
         when(spyBuilder.appendUrl(anyString())).thenCallRealMethod();
         when(spyBuilder.appendShowTag(anyString())).thenCallRealMethod();
+        when(spyBuilder.appendIgnoreAttr(anyString())).thenCallRealMethod();
         when(spyBuilder.build()).thenReturn(new ArrayList<Show>());
 
     }

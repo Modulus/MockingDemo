@@ -8,6 +8,7 @@ public class TestData {
     public static String getRootMarkup() {
         StringBuilder sb = new StringBuilder();
         sb.append("<div id='series'>");
+        sb.append("<a href='#serier'>Series 1</a>");
         sb.append("<a href='/s1'>Series 1</a>");
         sb.append("<a href='/s2'/>Series 2</a>");
         sb.append("<a href='/s3'>Series 3</a>");

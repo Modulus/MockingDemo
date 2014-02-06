@@ -42,9 +42,11 @@ public class ShowBuilderParamTest {
             builder = new ShowBuilder();
 
             builder.appendReader(reader).
-                    appendShowCollectionId("#serier").
+                    appendShowCollectionId("series").
                     appendShowTag("a").
+                    appendIgnoreAttr("#serier").
                     appendUrl("http://www.dbtv.no");
+
             shows = builder.build();
 
         } catch (MalformedURLException e) {

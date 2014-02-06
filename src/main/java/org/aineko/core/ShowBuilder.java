@@ -12,6 +12,7 @@ import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -21,6 +22,7 @@ public class ShowBuilder {
     private String url;
     private String divId;
     private String showTagName;
+    private List<String> ignoreAttributes;
     private HtmlReader reader;
 
     public ShowBuilder appendUrl(String url) {
@@ -43,17 +45,27 @@ public class ShowBuilder {
         return this;
     }
 
+    public ShowBuilder appendIgnoreAttr(String... ignoreAttributes){
+        if(ignoreAttributes != null){
+            this.ignoreAttributes = Arrays.asList(ignoreAttributes);
+        }
+        else {
+            this.ignoreAttributes = null;
+        }
+        return this;
+    }
+
     public List<Show> build() {
         List<Show> shows = new ArrayList<Show>();
         try {
             String rootHtml = reader.read(url);
             Document doc = Jsoup.parse(rootHtml);
-            Element seriesDiv = doc.getElementById("series");
-            Elements showAnchors = seriesDiv.getElementsByTag("a");
+            Element seriesDiv = doc.getElementById(divId);
+            Elements showAnchors = seriesDiv.getElementsByTag(showTagName);
 
             for (Element element : showAnchors) {
                 String currentShowHref = element.attr("href");
-                if (!currentShowHref.equalsIgnoreCase(divId)) {
+                if (!ignoreAttributes.contains(currentShowHref)) {
                     Show show = extractShowInfo(element, currentShowHref);
                     List<Episode> episodes = extractEpisodeInfo(element);
                     show.setEpisodes(episodes);
@@ -61,6 +73,8 @@ public class ShowBuilder {
                 }
 
             }
+        } catch (MalformedURLException e){
+            e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
         } finally {

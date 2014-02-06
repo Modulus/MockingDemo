@@ -18,7 +18,7 @@ public class ConvertUtil {
         if (length != null && String.class.isAssignableFrom(length.getClass())) {
 
             String text = (String) length;
-            if (!"live".equalsIgnoreCase(text)) {
+            if (!"live".equalsIgnoreCase(text) && !text.isEmpty()) {
                 return Time.valueOf("00:" + text.toString());
             }
             return Time.valueOf("00:00:00");

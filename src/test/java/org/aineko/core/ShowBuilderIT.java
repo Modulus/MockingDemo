@@ -2,6 +2,7 @@ package org.aineko.core;
 
 import org.junit.Test;
 
+import java.util.Arrays;
 import java.util.List;
 
 import static org.junit.Assert.assertNotNull;
@@ -19,12 +20,14 @@ public class ShowBuilderIT {
                 .appendUrl("http://www.dbtv.no")
                 .appendShowCollectionId("series")
                 .appendShowTag("a")
+                .appendIgnoreAttr("#serier")
                 .appendReader(new HtmlReader());
 
         List<Show> shows = builder.build();
         assertTrue(shows.size() >= 17);
         for(Show show : shows){
             assertNotNull(show.getEpisodes());
+            System.out.println(show);
         }
     }
 }

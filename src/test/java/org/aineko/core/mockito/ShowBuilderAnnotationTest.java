@@ -48,8 +48,9 @@ public class ShowBuilderAnnotationTest {
     @Test
     public void testBuild() throws MalformedURLException {
         builder.appendReader(reader).
-                appendShowCollectionId("#serier").
+                appendShowCollectionId("series").
                 appendShowTag("a").
+                appendIgnoreAttr("#serier").
                 appendUrl("http://www.dbtv.no");
 
         List<Show> shows = builder.build();
