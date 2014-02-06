@@ -96,15 +96,15 @@ public class ShowBuilder {
         List<Episode> episodes = new ArrayList<Episode>();
         for(LinkedTreeMap<String, String> map : detailsList){
             Episode episode = new Episode();
-//                            episode.setId(map.get("id"));
+            episode.setId(String.valueOf(map.get("id")));
             episode.setName(map.get("name"));
             episode.setShortDescription(map.get("shortDescription"));
             episode.setThumbnailUrl(new URL(map.get("thumbnailUrl")));
             episode.setPublishedDate(map.get("publishedDate"));
             episode.setVideoStill(new URL(map.get("videoStillUrl")));
-//                            episode.setLength(Time.valueOf(map.get("length")));
-//                            episode.setPlaysTotal(Integer.valueOf(map.get("playsTotal")));
-//                            episode.setPlaysTrailingWeek(Integer.valueOf(map.get("playsTrailingWeek")));
+            episode.setLength(ConvertUtil.toTime(map.get("length")));
+            episode.setPlaysTotal(ConvertUtil.toInteger(map.get("playsTotal")));
+            episode.setPlaysTrailingWeek( ConvertUtil.toInteger(map.get("playsTrailingWeek")));
             episode.setVideoUrl(new URL(map.get("url")));
 
             episodes.add(episode);
