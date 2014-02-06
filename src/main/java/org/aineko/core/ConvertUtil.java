@@ -1,10 +1,6 @@
 package org.aineko.core;
-<<<<<<< HEAD
 
-import org.omg.PortableInterceptor.SYSTEM_EXCEPTION;
 
-=======
->>>>>>> tests
 import java.sql.Time;
 
 /**
@@ -13,11 +9,7 @@ import java.sql.Time;
 public class ConvertUtil {
     public static int toInteger(Object value) {
         if(value != null && Double.class.isAssignableFrom(value.getClass()) ){
-<<<<<<< HEAD
            return ((Double)value).intValue();
-=======
-            return ((Double)value).intValue();
->>>>>>> tests
         }
         return 0;
     }
@@ -32,12 +24,7 @@ public class ConvertUtil {
             return Time.valueOf("00:00:00");
 
         }
-<<<<<<< HEAD
        return Time.valueOf("00:00:00");
     }
 }
-=======
-        return Time.valueOf("00:00:00");
-    }
-}
->>>>>>> tests
+

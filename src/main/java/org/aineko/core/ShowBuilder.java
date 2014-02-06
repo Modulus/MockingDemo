@@ -11,7 +11,6 @@ import org.jsoup.select.Elements;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.sql.Time;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -86,10 +85,10 @@ public class ShowBuilder {
     }
 
     protected List<Episode> extractEpisodeInfo(Element element) {
-        String showDetails = getShowDetails(url,element.attr("href").substring(1));
+        String showDetails = extractShowDetails(url,element.attr("href").substring(1));
         List<Episode> episodes = new ArrayList<Episode>();
         try {
-            episodes = getEpisodes(showDetails);
+            episodes = extractEpisodes(showDetails);
         }
         catch (JsonSyntaxException e){
             e.printStackTrace();

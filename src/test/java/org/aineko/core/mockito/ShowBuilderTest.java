@@ -51,9 +51,10 @@ public class ShowBuilderTest {
 
     @Test
     public void testBuildReaderException(){
-        builder.withReader(reader).
-                withShowCollectionId("exception").
-                withUrl("http://wwww.vgtv.no");
+        builder.appendReader(reader).
+                appendShowCollectionId("exception").
+                appendShowCollectionId("a").
+                appendUrl("http://wwww.vgtv.no");
 
         assertTrue(builder.build().isEmpty());
     }
@@ -61,9 +62,10 @@ public class ShowBuilderTest {
 
     @Test
     public void testBuild() throws MalformedURLException {
-        builder.withReader(reader).
-                withShowCollectionId("#serier").
-                withUrl("http://www.dbtv.no");
+        builder.appendReader(reader).
+                appendShowCollectionId("#serier").
+                appendShowTag("a").
+                appendUrl("http://www.dbtv.no");
 
         List<Show> shows = builder.build();
 
