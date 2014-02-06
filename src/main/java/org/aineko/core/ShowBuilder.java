@@ -48,7 +48,7 @@ public class ShowBuilder {
 
             for (Element element : showAnchors) {
                 String currentShowHref = element.attr("href");
-                if (!currentShowHref.equalsIgnoreCase("#serier")) {
+                if (!currentShowHref.equalsIgnoreCase(divId)) {
                     Show show = extractShowInfo(element, currentShowHref);
                     List<Episode> episodes = extractEpisodeInfo(element);
                     show.setEpisodes(episodes);
