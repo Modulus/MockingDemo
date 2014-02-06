@@ -11,6 +11,7 @@ import org.jsoup.select.Elements;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.sql.Time;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -63,8 +64,8 @@ public class ShowBuilder {
                     Show show = show1;
 
                     try {
-                        String showDetails = getShowDetails(url,element.attr("href").substring(1));
-                        List<Episode> episodes = getEpisodes(showDetails);
+                        String showDetails = extractShowDetails(url, element.attr("href").substring(1));
+                        List<Episode> episodes = extractEpisodes(showDetails);
                         show.setEpisodes(episodes);
                         shows.add(show);
                     }
@@ -86,21 +87,21 @@ public class ShowBuilder {
     }
 
 
-    protected List<Episode> getEpisodes(String showDetails) throws MalformedURLException {
+    protected List<Episode> extractEpisodes(String showDetails) throws MalformedURLException {
         Gson gson = new Gson();
         ArrayList<LinkedTreeMap> detailsList = gson.fromJson(showDetails, ArrayList.class);
         List<Episode> episodes = new ArrayList<Episode>();
         for(LinkedTreeMap<String, String> map : detailsList){
             Episode episode = new Episode();
-//                            episode.setId(map.get("id"));
+            episode.setId(String.valueOf(map.get("id")));
             episode.setName(map.get("name"));
             episode.setShortDescription(map.get("shortDescription"));
             episode.setThumbnailUrl(new URL(map.get("thumbnailUrl")));
             episode.setPublishedDate(map.get("publishedDate"));
             episode.setVideoStill(new URL(map.get("videoStillUrl")));
-//                            episode.setLength(Time.valueOf(map.get("length")));
-//                            episode.setPlaysTotal(Integer.valueOf(map.get("playsTotal")));
-//                            episode.setPlaysTrailingWeek(Integer.valueOf(map.get("playsTrailingWeek")));
+            episode.setLength(ConvertUtil.toTime(map.get("length")));
+            episode.setPlaysTotal(ConvertUtil.toInteger(map.get("playsTotal")));
+            episode.setPlaysTrailingWeek( ConvertUtil.toInteger(map.get("playsTrailingWeek")));
             episode.setVideoUrl(new URL(map.get("url")));
 
             episodes.add(episode);
@@ -108,7 +109,7 @@ public class ShowBuilder {
         return episodes;
     }
 
-    protected String getShowDetails(String baseUri, String showName) {
+    protected String extractShowDetails(String baseUri, String showName) {
         StringBuilder episodeUrlBuilder = new StringBuilder();
         episodeUrlBuilder.append(baseUri).append("?op=ContentTail&t=q&vid=")
                 .append(showName)
@@ -120,9 +121,9 @@ public class ShowBuilder {
             content =  reader.read(episodeUrlBuilder.toString());
         } catch (MalformedURLException e) {
             e.printStackTrace();
+        } finally {
+            return content;
         }
-
-        return content;
 
     }
 
