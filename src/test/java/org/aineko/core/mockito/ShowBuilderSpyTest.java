@@ -28,16 +28,20 @@ public class ShowBuilderSpyTest {
         when(reader.read(anyString())).thenReturn("");
 
         spyBuilder = spy(originalBuilder);
-        when(spyBuilder.withReader(any(HtmlReader.class))).thenCallRealMethod();
-        when(spyBuilder.withShowCollectionId(anyString())).thenCallRealMethod();
-        when(spyBuilder.withUrl(anyString())).thenCallRealMethod();
+        when(spyBuilder.appendReader(any(HtmlReader.class))).thenCallRealMethod();
+        when(spyBuilder.appendShowCollectionId(anyString())).thenCallRealMethod();
+        when(spyBuilder.appendUrl(anyString())).thenCallRealMethod();
+        when(spyBuilder.appendShowTag(anyString())).thenCallRealMethod();
         when(spyBuilder.build()).thenReturn(new ArrayList<Show>());
 
     }
 
     @Test
     public void testSpy() {
-        spyBuilder.withReader(reader).withShowCollectionId("#finnesikke").withUrl("http://fjasogvas.no");
+        spyBuilder.appendReader(reader).
+                appendShowCollectionId("#finnesikke").
+                appendShowTag("a").
+                appendUrl("http://fjasogvas.no");
 
         assertTrue(spyBuilder.build().isEmpty());
     }

@@ -48,31 +48,16 @@ public class ShowBuilder {
         try {
             String rootHtml = reader.read(url);
             Document doc = Jsoup.parse(rootHtml);
-            Element seriesDiv = doc.getElementById(divId);
-            Elements showAnchors = seriesDiv.getElementsByTag(showTagName);
+            Element seriesDiv = doc.getElementById("series");
+            Elements showAnchors = seriesDiv.getElementsByTag("a");
 
             for (Element element : showAnchors) {
                 String currentShowHref = element.attr("href");
-                if (!currentShowHref.equalsIgnoreCase("#serier")) {
-                    Show show1 = new Show();
-                    StringBuilder showRootUrlBuilder = new StringBuilder();
-                    showRootUrlBuilder.append(url).append(currentShowHref);
-                    show1.setUrl(new URL(showRootUrlBuilder.toString()));
-                    show1.setName(element.text());
-                    Show show = show1;
-
-                    try {
-                        String showDetails = extractShowDetails(url, element.attr("href").substring(1));
-                        List<Episode> episodes = extractEpisodes(showDetails);
-                        show.setEpisodes(episodes);
-                        shows.add(show);
-                    }
-                    catch (JsonSyntaxException e){
-                        e.printStackTrace();
-                    }
-                    catch(Exception e){
-                        e.printStackTrace();
-                    }
+                if (!currentShowHref.equalsIgnoreCase(divId)) {
+                    Show show = extractShowInfo(element, currentShowHref);
+                    List<Episode> episodes = extractEpisodeInfo(element);
+                    show.setEpisodes(episodes);
+                    shows.add(show);
                 }
 
             }
@@ -85,10 +70,10 @@ public class ShowBuilder {
     }
 
     protected List<Episode> extractEpisodeInfo(Element element) {
-        String showDetails = extractShowDetails(url,element.attr("href").substring(1));
+        String showDetails = getShowDetails(url,element.attr("href").substring(1));
         List<Episode> episodes = new ArrayList<Episode>();
         try {
-            episodes = extractEpisodes(showDetails);
+            episodes = getEpisodes(showDetails);
         }
         catch (JsonSyntaxException e){
             e.printStackTrace();
@@ -101,7 +86,16 @@ public class ShowBuilder {
         }
     }
 
-    protected List<Episode> extractEpisodes(String showDetails) throws MalformedURLException {
+    protected Show extractShowInfo(Element element, String currentShowHref) throws MalformedURLException {
+        Show show = new Show();
+        StringBuilder showRootUrlBuilder = new StringBuilder();
+        showRootUrlBuilder.append(url).append(currentShowHref);
+        show.setUrl(new URL(showRootUrlBuilder.toString()));
+        show.setName(element.text());
+        return show;
+    }
+
+    protected List<Episode> getEpisodes(String showDetails) throws MalformedURLException {
         Gson gson = new Gson();
         ArrayList<LinkedTreeMap> detailsList = gson.fromJson(showDetails, ArrayList.class);
         List<Episode> episodes = new ArrayList<Episode>();
@@ -123,7 +117,7 @@ public class ShowBuilder {
         return episodes;
     }
 
-    protected String extractShowDetails(String baseUri, String showName) {
+    protected String getShowDetails(String baseUri, String showName) {
         StringBuilder episodeUrlBuilder = new StringBuilder();
         episodeUrlBuilder.append(baseUri).append("?op=ContentTail&t=q&vid=")
                 .append(showName)
@@ -135,9 +129,9 @@ public class ShowBuilder {
             content =  reader.read(episodeUrlBuilder.toString());
         } catch (MalformedURLException e) {
             e.printStackTrace();
-        } finally {
-            return content;
         }
+
+        return content;
 
     }
 
