@@ -44,7 +44,6 @@ public class ShowBuilder {
         return this;
     }
 
-
     public List<Show> build() {
         List<Show> shows = new ArrayList<Show>();
         try {
@@ -86,6 +85,22 @@ public class ShowBuilder {
 
     }
 
+    protected List<Episode> extractEpisodeInfo(Element element) {
+        String showDetails = getShowDetails(url,element.attr("href").substring(1));
+        List<Episode> episodes = new ArrayList<Episode>();
+        try {
+            episodes = getEpisodes(showDetails);
+        }
+        catch (JsonSyntaxException e){
+            e.printStackTrace();
+        }
+        catch(Exception e){
+            e.printStackTrace();
+        }
+        finally {
+            return episodes;
+        }
+    }
 
     protected List<Episode> extractEpisodes(String showDetails) throws MalformedURLException {
         Gson gson = new Gson();
