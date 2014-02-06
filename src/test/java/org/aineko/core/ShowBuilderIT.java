@@ -1,8 +1,5 @@
 package org.aineko.core;
 
-import org.aineko.core.HtmlReader;
-import org.aineko.core.Show;
-import org.aineko.core.ShowBuilder;
 import org.junit.Test;
 
 import java.util.List;
@@ -18,10 +15,11 @@ public class ShowBuilderIT {
     @Test
     public void testShowBuilder(){
 
-        ShowBuilder builder = new ShowBuilder().
-                withUrl("http://www.dbtv.no").
-                withShowCollectionId("#serier").
-                withReader(new HtmlReader());
+        ShowBuilder builder = new ShowBuilder()
+                .appendUrl("http://www.dbtv.no")
+                .appendShowCollectionId("series")
+                .appendShowTag("a")
+                .appendReader(new HtmlReader());
 
         List<Show> shows = builder.build();
         assertTrue(shows.size() >= 17);
