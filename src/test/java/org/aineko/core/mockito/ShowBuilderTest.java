@@ -96,7 +96,7 @@ public class ShowBuilderTest {
 
 
     private class ContainsMatcher extends BaseMatcher<String> {
-        private  String text = "&vid=s3";
+        private  String text;
 
         public ContainsMatcher(String text){
             this.text = text;
