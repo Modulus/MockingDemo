@@ -38,8 +38,8 @@ public class ShowBuilderAnnotationTest {
         MockitoAnnotations.initMocks(this);
         when(reader.read("http://www.dbtv.no")).thenReturn(getRootMarkup());
         when(reader.read(contains("&vid=s1"))).thenReturn(getEpisodeSeries1Markup());
-        when(reader.read(matches("http://www.dbtv.no.*&vid=s2.*"))).thenReturn(getEpisodeSeries2Markup());
-        when(reader.read(contains("&vid=s3"))).thenReturn(getEpisodeSeries3Markup());
+        when(reader.read(matches("http://www.dbtv.no\\?op=ContentTail&t=q&vid=s2&inapp="))).thenReturn(getEpisodeSeries2Markup());
+        when(reader.read(matches("http://www.dbtv.no.*&vid=s3.*"))).thenReturn(getEpisodeSeries3Markup());
 
         builder = new ShowBuilder();
     }
