@@ -22,7 +22,6 @@ public class ConvertUtil {
                 return Time.valueOf("00:" + text.toString());
             }
             return Time.valueOf("00:00:00");
-
         }
        return Time.valueOf("00:00:00");
     }
