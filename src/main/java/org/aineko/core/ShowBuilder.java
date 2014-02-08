@@ -75,8 +75,7 @@ public class ShowBuilder {
             }
         } catch (MalformedURLException e){
             e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
+
         } finally {
             return shows;
         }
@@ -90,9 +89,6 @@ public class ShowBuilder {
             episodes = getEpisodes(showDetails);
         }
         catch (JsonSyntaxException e){
-            e.printStackTrace();
-        }
-        catch(Exception e){
             e.printStackTrace();
         }
         finally {

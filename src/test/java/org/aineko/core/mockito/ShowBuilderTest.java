@@ -10,6 +10,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.mockito.internal.matchers.Contains;
 
+import java.io.IOException;
 import java.net.MalformedURLException;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -47,19 +48,9 @@ public class ShowBuilderTest {
         when(reader.read(argThat(new ContainsMatcher("&vid=s3")))).thenReturn(getEpisodeSeries3Markup());
         when(reader.read(matches("exception"))).thenThrow(new MalformedURLException("Mocked exception"));
 
+
         builder = new ShowBuilder();
     }
-
-    @Test
-    public void testBuildReaderException(){
-        builder.appendReader(reader).
-                appendShowCollectionId("exception").
-                appendShowCollectionId("a").
-                appendUrl("http://wwww.vgtv.no");
-
-        assertTrue(builder.build().isEmpty());
-    }
-
 
     @Test
     public void testBuild() throws MalformedURLException {
@@ -70,7 +61,6 @@ public class ShowBuilderTest {
                 appendUrl("http://www.dbtv.no");
 
         List<Show> shows = builder.build();
-
         /**
          * Print for debug
          * */
@@ -88,11 +78,24 @@ public class ShowBuilderTest {
         verify(reader, times(1)).read("http://www.dbtv.no?op=ContentTail&t=q&vid=s1&inapp=");
         verify(reader, times(1)).read("http://www.dbtv.no?op=ContentTail&t=q&vid=s2&inapp=");
         verify(reader, times(1)).read("http://www.dbtv.no?op=ContentTail&t=q&vid=s3&inapp=");
+        verify(reader, atLeast(1)).read("http://www.dbtv.no?op=ContentTail&t=q&vid=s3&inapp=");
 
         assertEquals(shows.size(), 3);
-
-
     }
+
+    @Test
+    public void testReaderMalformedURLException(){
+        builder.appendReader(reader).
+                appendShowCollectionId("exception").
+                appendShowCollectionId("a").
+                appendUrl("http://wwww.vgtv.no");
+
+        assertTrue(builder.build().isEmpty());
+    }
+
+
+
+
 
 
     private class ContainsMatcher extends BaseMatcher<String> {
