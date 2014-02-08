@@ -9,7 +9,7 @@ import static org.mockito.Mockito.*;
 /**
  * Created by Modulus on 08.02.14.
  */
-public class Presentation {
+public class PresentationTest {
 
     private Something mockObject;
 
