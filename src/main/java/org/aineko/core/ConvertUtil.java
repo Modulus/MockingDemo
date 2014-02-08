@@ -18,8 +18,14 @@ public class ConvertUtil {
         if (length != null && String.class.isAssignableFrom(length.getClass())) {
 
             String text = (String) length;
-            if (!"live".equalsIgnoreCase(text) && !text.isEmpty()) {
-                return Time.valueOf("00:" + text.toString());
+            if(text.matches("\\d{1,2}:\\d{1,2}:\\d{1,2}")){
+                return Time.valueOf(text);
+            }
+            else if(text.matches("\\d{1,2}:\\d{1,2}")){
+                return Time.valueOf(String.format("00:%s",text));
+            }
+            else if(text.matches("\\d{1,2}")){
+                return Time.valueOf(String.format("00:00:%s", text));
             }
             return Time.valueOf("00:00:00");
         }
