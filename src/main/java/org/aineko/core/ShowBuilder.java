@@ -86,7 +86,7 @@ public class ShowBuilder {
         List<Episode> episodes = new ArrayList<Episode>();
         try {
             Gson gson = new Gson();
-            ArrayList<LinkedTreeMap> detailsList = gson.fromJson(showDetails, ArrayList.class);;
+            ArrayList<LinkedTreeMap> detailsList = gson.fromJson(showDetails, ArrayList.class);
             for(LinkedTreeMap<String, String> map : detailsList){
                 Episode episode = new Episode();
                 episode.setId(String.valueOf(map.get("id")));
@@ -113,9 +113,7 @@ public class ShowBuilder {
 
     protected Show extractShow(Element element, String currentShowHref) throws MalformedURLException {
         Show show = new Show();
-        StringBuilder showRootUrlBuilder = new StringBuilder();
-        showRootUrlBuilder.append(url).append(currentShowHref);
-        show.setUrl(new URL(showRootUrlBuilder.toString()));
+        show.setUrl(new URL(url + currentShowHref));
         show.setName(element.text());
         return show;
     }
