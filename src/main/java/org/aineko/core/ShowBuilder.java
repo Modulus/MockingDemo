@@ -86,8 +86,7 @@ public class ShowBuilder {
         List<Episode> episodes = new ArrayList<Episode>();
         try {
             Gson gson = new Gson();
-            ArrayList<LinkedTreeMap> detailsList = gson.fromJson(showDetails, ArrayList.class);
-            List<Episode> episodes1 = new ArrayList<Episode>();
+            ArrayList<LinkedTreeMap> detailsList = gson.fromJson(showDetails, ArrayList.class);;
             for(LinkedTreeMap<String, String> map : detailsList){
                 Episode episode = new Episode();
                 episode.setId(String.valueOf(map.get("id")));
@@ -101,9 +100,8 @@ public class ShowBuilder {
                 episode.setPlaysTrailingWeek( ConvertUtil.toInteger(map.get("playsTrailingWeek")));
                 episode.setVideoUrl(new URL(map.get("url")));
 
-                episodes1.add(episode);
+                episodes.add(episode);
             }
-            episodes = episodes1;
         }
         catch (JsonSyntaxException e){
             e.printStackTrace();
