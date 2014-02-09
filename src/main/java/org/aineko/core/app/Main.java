@@ -1,4 +1,4 @@
-package org.aineko.core.org.aineko.app;
+package org.aineko.core.app;
 
 import org.aineko.core.HtmlReader;
 import org.aineko.core.Show;
@@ -16,6 +16,7 @@ public class Main {
                 .appendUrl("http://www.dbtv.no")
                 .appendShowCollectionId("series")
                 .appendShowTag("a")
+                .appendIgnoreAttr("#serier")
                 .appendReader(new HtmlReader());
 
         List<Show> shows = builder.build();

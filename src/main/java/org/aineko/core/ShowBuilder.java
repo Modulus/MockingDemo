@@ -12,6 +12,7 @@ import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -21,6 +22,7 @@ public class ShowBuilder {
     private String url;
     private String divId;
     private String showTagName;
+    private List<String> ignoreAttributes;
     private HtmlReader reader;
 
     public ShowBuilder appendUrl(String url) {
@@ -43,6 +45,16 @@ public class ShowBuilder {
         return this;
     }
 
+    public ShowBuilder appendIgnoreAttr(String... ignoreAttributes){
+        if(ignoreAttributes != null){
+            this.ignoreAttributes = Arrays.asList(ignoreAttributes);
+        }
+        else {
+            this.ignoreAttributes = null;
+        }
+        return this;
+    }
+
     public List<Show> build() {
         List<Show> shows = new ArrayList<Show>();
         try {
@@ -53,7 +65,7 @@ public class ShowBuilder {
 
             for (Element element : showAnchors) {
                 String currentShowHref = element.attr("href");
-                if (!currentShowHref.equalsIgnoreCase("#serier")) {
+                if (!ignoreAttributes.contains(currentShowHref)) {
                     Show show1 = new Show();
                     StringBuilder showRootUrlBuilder = new StringBuilder();
                     showRootUrlBuilder.append(url).append(currentShowHref);
