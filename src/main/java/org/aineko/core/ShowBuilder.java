@@ -57,16 +57,13 @@ public class ShowBuilder {
     public List<Show> build() {
         List<Show> shows = new ArrayList<Show>();
         try {
-            String rootHtml = reader.read(url);
-            Document doc = Jsoup.parse(rootHtml);
-            Element seriesDiv = doc.getElementById(divId);
-            Elements showAnchors = seriesDiv.getElementsByTag(showTagName);
+            Elements showElements = extractShowElements();
 
-            for (Element element : showAnchors) {
-                String currentShowHref = element.attr("href");
-                if (!ignoreAttributes.contains(currentShowHref)) {
-                    Show show = extractShow(element, currentShowHref);
-                    List<Episode> episodes = extractEpisode(element);
+            for (Element element : showElements) {
+                String currentShowName = element.attr("href");
+                if (!ignoreAttributes.contains(currentShowName)) {
+                    Show show = extractShow(element, currentShowName);
+                    List<Episode> episodes = extractEpisodes(element);
                     show.setEpisodes(episodes);
                     shows.add(show);
                 }
@@ -81,7 +78,14 @@ public class ShowBuilder {
 
     }
 
-    protected List<Episode> extractEpisode(Element element) {
+    protected Elements extractShowElements() throws MalformedURLException {
+        String rootHtml = reader.read(url);
+        Document doc = Jsoup.parse(rootHtml);
+        Element seriesDiv = doc.getElementById(divId);
+        return seriesDiv.getElementsByTag(showTagName);
+    }
+
+    protected List<Episode> extractEpisodes(Element element) {
         String showDetails = getShowDetails(url,element.attr("href").substring(1));
         List<Episode> episodes = new ArrayList<Episode>();
         try {
