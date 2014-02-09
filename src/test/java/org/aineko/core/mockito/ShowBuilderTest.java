@@ -78,7 +78,8 @@ public class ShowBuilderTest {
         verify(reader, times(1)).read("http://www.dbtv.no?op=ContentTail&t=q&vid=s1&inapp=");
         verify(reader, times(1)).read("http://www.dbtv.no?op=ContentTail&t=q&vid=s2&inapp=");
         verify(reader, times(1)).read("http://www.dbtv.no?op=ContentTail&t=q&vid=s3&inapp=");
-        verify(reader, atLeast(1)).read("http://www.dbtv.no?op=ContentTail&t=q&vid=s3&inapp=");
+
+
 
         assertEquals(shows.size(), 3);
     }

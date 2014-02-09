@@ -1,4 +1,4 @@
-package org.aineko.core.org.aineko.app;
+package org.aineko.core.app;
 
 import org.aineko.core.HtmlReader;
 import org.aineko.core.Show;
