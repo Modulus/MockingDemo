@@ -1,0 +1,16 @@
+SomeClass mockObject = mock(SomeClass.class);
+
+when(mockObject.method1(matches("one"))).thenReturn(true);
+when(mockObject.method2(contains("false"))).thenReturn(false);
+
+verify(mockObject, times(1)).method1(anyString());
+verify(mockObject, times(1)).method1("one");
+==============================================
+
+Oppgave urler:
+
+root : "http://www.dbtv.no"
+serier:
+    "http://www.dbtv.no?op=ContentTail&t=q&vid=s1&inapp="
+    "http://www.dbtv.no?op=ContentTail&t=q&vid=s2&inapp="
+    "http://www.dbtv.no?op=ContentTail&t=q&vid=s3&inapp="

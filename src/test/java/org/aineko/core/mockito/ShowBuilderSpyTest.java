@@ -5,7 +5,6 @@ import org.aineko.core.Show;
 import org.aineko.core.ShowBuilder;
 import org.junit.Before;
 import org.junit.Test;
-import org.mockito.stubbing.Answer;
 
 import java.net.MalformedURLException;
 import java.util.ArrayList;
