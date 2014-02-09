@@ -67,7 +67,6 @@ public class ShowBuilderTest {
         assertEquals(shows.size(), 3);
     }
 
-    @Ignore
     @Test
     public void testReaderMalformedURLException(){
         builder.appendReader(reader).
