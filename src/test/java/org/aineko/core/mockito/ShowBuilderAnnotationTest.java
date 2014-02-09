@@ -4,6 +4,7 @@ import org.aineko.core.HtmlReader;
 import org.aineko.core.Show;
 import org.aineko.core.ShowBuilder;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
@@ -22,7 +23,7 @@ import static org.mockito.Mockito.*;
  * Created by Modulus on 22.01.14.
  * This is an exact copy of ShowBuilderTest, but with Mockito annotations
  */
-
+@Ignore
 //@RunWith(MockitoJUnitRunner.class)
 public class ShowBuilderAnnotationTest {
     private ShowBuilder builder;
@@ -40,6 +41,7 @@ public class ShowBuilderAnnotationTest {
 
         builder = new ShowBuilder();
     }
+
 
 
     @Test

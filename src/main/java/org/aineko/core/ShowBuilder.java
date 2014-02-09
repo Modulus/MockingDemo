@@ -8,7 +8,6 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
-import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
@@ -66,10 +65,53 @@ public class ShowBuilder {
             for (Element element : showAnchors) {
                 String currentShowHref = element.attr("href");
                 if (!ignoreAttributes.contains(currentShowHref)) {
-                    Show show = extractShowInfo(element, currentShowHref);
-                    List<Episode> episodes = extractEpisodeInfo(element);
-                    show.setEpisodes(episodes);
-                    shows.add(show);
+                    Show show1 = new Show();
+                    StringBuilder showRootUrlBuilder = new StringBuilder();
+                    showRootUrlBuilder.append(url).append(currentShowHref);
+                    show1.setUrl(new URL(showRootUrlBuilder.toString()));
+                    show1.setName(element.text());
+                    Show show = show1;
+
+                    try {
+
+                        StringBuilder episodeUrlBuilder = new StringBuilder();
+                        episodeUrlBuilder.append(url).append("?op=ContentTail&t=q&vid=")
+                                .append(element.attr("href").substring(1))
+                                .append("&inapp=");
+
+                        String showDetails = reader.read(episodeUrlBuilder.toString());
+
+
+                        Gson gson = new Gson();
+                        ArrayList<LinkedTreeMap> detailsList = gson.fromJson(showDetails, ArrayList.class);
+                        List<Episode> episodes = new ArrayList<Episode>();
+                        for(LinkedTreeMap<String, String> map : detailsList){
+                            Episode episode = new Episode();
+                            episode.setId(String.valueOf(map.get("id")));
+                            episode.setName(map.get("name"));
+                            episode.setShortDescription(map.get("shortDescription"));
+                            episode.setThumbnailUrl(new URL(map.get("thumbnailUrl")));
+                            episode.setPublishedDate(map.get("publishedDate"));
+                            episode.setVideoStill(new URL(map.get("videoStillUrl")));
+                            episode.setLength(ConvertUtil.toTime(map.get("length")));
+                            episode.setPlaysTotal(ConvertUtil.toInteger(map.get("playsTotal")));
+                            episode.setPlaysTrailingWeek( ConvertUtil.toInteger(map.get("playsTrailingWeek")));
+                            episode.setVideoUrl(new URL(map.get("url")));
+
+                            episodes.add(episode);
+                        }
+
+
+
+                        show.setEpisodes(episodes);
+                        shows.add(show);
+
+                    }    catch (JsonSyntaxException e){
+                        e.printStackTrace();
+                    }
+                    catch(Exception e){
+                        e.printStackTrace();
+                    }
                 }
 
             }
@@ -81,72 +123,5 @@ public class ShowBuilder {
         }
 
     }
-
-    protected List<Episode> extractEpisodeInfo(Element element) {
-        String showDetails = getShowDetails(url,element.attr("href").substring(1));
-        List<Episode> episodes = new ArrayList<Episode>();
-        try {
-            episodes = getEpisodes(showDetails);
-        }
-        catch (JsonSyntaxException e){
-            e.printStackTrace();
-        }
-        catch(Exception e){
-            e.printStackTrace();
-        }
-        finally {
-            return episodes;
-        }
-    }
-
-    protected Show extractShowInfo(Element element, String currentShowHref) throws MalformedURLException {
-        Show show = new Show();
-        StringBuilder showRootUrlBuilder = new StringBuilder();
-        showRootUrlBuilder.append(url).append(currentShowHref);
-        show.setUrl(new URL(showRootUrlBuilder.toString()));
-        show.setName(element.text());
-        return show;
-    }
-
-    protected List<Episode> getEpisodes(String showDetails) throws MalformedURLException {
-        Gson gson = new Gson();
-        ArrayList<LinkedTreeMap> detailsList = gson.fromJson(showDetails, ArrayList.class);
-        List<Episode> episodes = new ArrayList<Episode>();
-        for(LinkedTreeMap<String, String> map : detailsList){
-            Episode episode = new Episode();
-            episode.setId(String.valueOf(map.get("id")));
-            episode.setName(map.get("name"));
-            episode.setShortDescription(map.get("shortDescription"));
-            episode.setThumbnailUrl(new URL(map.get("thumbnailUrl")));
-            episode.setPublishedDate(map.get("publishedDate"));
-            episode.setVideoStill(new URL(map.get("videoStillUrl")));
-            episode.setLength(ConvertUtil.toTime(map.get("length")));
-            episode.setPlaysTotal(ConvertUtil.toInteger(map.get("playsTotal")));
-            episode.setPlaysTrailingWeek( ConvertUtil.toInteger(map.get("playsTrailingWeek")));
-            episode.setVideoUrl(new URL(map.get("url")));
-
-            episodes.add(episode);
-        }
-        return episodes;
-    }
-
-    protected String getShowDetails(String baseUri, String showName) {
-        StringBuilder episodeUrlBuilder = new StringBuilder();
-        episodeUrlBuilder.append(baseUri).append("?op=ContentTail&t=q&vid=")
-                .append(showName)
-                .append("&inapp=");
-
-        String content = "";
-
-        try {
-            content =  reader.read(episodeUrlBuilder.toString());
-        } catch (MalformedURLException e) {
-            e.printStackTrace();
-        }
-
-        return content;
-
-    }
-
 
 }
