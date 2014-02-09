@@ -65,12 +65,12 @@ public class ShowBuilder {
             for (Element element : showAnchors) {
                 String currentShowHref = element.attr("href");
                 if (!ignoreAttributes.contains(currentShowHref)) {
-                    Show show1 = new Show();
+                    Show show = new Show();
                     StringBuilder showRootUrlBuilder = new StringBuilder();
                     showRootUrlBuilder.append(url).append(currentShowHref);
-                    show1.setUrl(new URL(showRootUrlBuilder.toString()));
-                    show1.setName(element.text());
-                    Show show = show1;
+                    show.setUrl(new URL(showRootUrlBuilder.toString()));
+                    show.setName(element.text());
+
 
                     try {
 
