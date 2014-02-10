@@ -93,7 +93,7 @@ public class ShowBuilder {
             ArrayList<LinkedTreeMap> detailsList = gson.fromJson(showDetails, ArrayList.class);
             for(LinkedTreeMap<String, String> map : detailsList){
                 Episode episode = new Episode();
-                episode.setId(String.valueOf(map.get("id")));
+                episode.setId(String.valueOf(ConvertUtil.toInteger(String.valueOf(map.get("id")))));
                 episode.setName(map.get("name"));
                 episode.setShortDescription(map.get("shortDescription"));
                 episode.setThumbnailUrl(new URL(map.get("thumbnailUrl")));
