@@ -10,7 +10,17 @@ public class Show {
     private URL url;
     private String name;
 
+    protected Show(URL url, String name, List<Episode> episodes) {
+        this.url = url;
+        this.name = name;
+        this.episodes = episodes;
+    }
+
     List<Episode> episodes;
+
+    public Show() {
+
+    }
 
     public List<Episode> getEpisodes() {
         return episodes;

@@ -87,7 +87,7 @@ public class ShowBuilder {
                         List<Episode> episodes = new ArrayList<Episode>();
                         for(LinkedTreeMap<String, String> map : detailsList){
                             Episode episode = new Episode();
-                            episode.setId(String.valueOf(map.get("id")));
+                            episode.setId(ConvertUtil.convertId(map.get("id")));
                             episode.setName(map.get("name"));
                             episode.setShortDescription(map.get("shortDescription"));
                             episode.setThumbnailUrl(new URL(map.get("thumbnailUrl")));

@@ -21,6 +21,23 @@ public class Episode {
     private int playsTrailingWeek;
     private URL videoUrl;
 
+    protected Episode(String id, String name, String shortDescription, URL thumbnailUrl, String publishedDate, URL videoStill, Time length, int playsTotal, int playsTrailingWeek, URL videoUrl) {
+        this.id = id;
+        this.name = name;
+        this.shortDescription = shortDescription;
+        this.thumbnailUrl = thumbnailUrl;
+        this.publishedDate = publishedDate;
+        this.videoStill = videoStill;
+        this.length = length;
+        this.playsTotal = playsTotal;
+        this.playsTrailingWeek = playsTrailingWeek;
+        this.videoUrl = videoUrl;
+    }
+
+    public Episode() {
+
+    }
+
     public String getId() {
         return id;
     }
