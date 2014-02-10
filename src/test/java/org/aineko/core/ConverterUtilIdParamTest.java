@@ -23,8 +23,8 @@ public class ConverterUtilIdParamTest {
     public static Collection<Object[]> getParams(){
         return Arrays.asList(new Object[][]{
                 {"1878692615001", 1.878692615001E12 },
-//                {1, "1",},
-//                {123, "123",}
+                { "1", 1.0},
+                {"123", 123.123,}
 
 
         });
