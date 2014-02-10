@@ -90,10 +90,10 @@ public class ShowBuilder {
         List<Episode> episodes = new ArrayList<Episode>();
         try {
             Gson gson = new Gson();
-            ArrayList<LinkedTreeMap> detailsList = gson.fromJson(showDetails, ArrayList.class);
+            ArrayList<LinkedTreeMap<String, String>> detailsList = gson.fromJson(showDetails, ArrayList.class);
             for(LinkedTreeMap<String, String> map : detailsList){
                 Episode episode = new Episode();
-                episode.setId(String.valueOf(ConvertUtil.toInteger(String.valueOf(map.get("id")))));
+                episode.setId(ConvertUtil.convertId(map.get("id")));
                 episode.setName(map.get("name"));
                 episode.setShortDescription(map.get("shortDescription"));
                 episode.setThumbnailUrl(new URL(map.get("thumbnailUrl")));
@@ -103,6 +103,7 @@ public class ShowBuilder {
                 episode.setPlaysTotal(ConvertUtil.toInteger(map.get("playsTotal")));
                 episode.setPlaysTrailingWeek( ConvertUtil.toInteger(map.get("playsTrailingWeek")));
                 episode.setVideoUrl(new URL(map.get("url")));
+
 
                 episodes.add(episode);
             }

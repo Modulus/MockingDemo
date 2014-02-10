@@ -26,6 +26,33 @@ public class ConvertUtil {
         return 0;
     }
 
+
+    public static String convertId(Object value){
+
+        if(value != null && String.class.isAssignableFrom(value.getClass())){
+            return value.toString();
+        }
+        else if (value != null && Double.class.isAssignableFrom(value.getClass())) {
+            StringBuilder sb = new StringBuilder();
+            String text = value.toString();
+
+            if(text.contains(".")){
+                String[] parts = text.split("\\.");
+                sb.append(parts[0]);
+
+                if(text.contains("E")){
+                    String lastPart = parts[1].substring(0, (parts[1]).indexOf("E"));
+                    sb.append(lastPart);
+                }
+            }
+
+
+
+            return sb.toString();
+        }
+        return "";
+    }
+
     public static Time toTime(Object length) {
         if (length != null && String.class.isAssignableFrom(length.getClass())) {
 
