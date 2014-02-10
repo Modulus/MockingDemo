@@ -11,6 +11,18 @@ public class ConvertUtil {
         if(value != null && Double.class.isAssignableFrom(value.getClass()) ){
            return ((Double)value).intValue();
         }
+        else if(value != null && String.class.isAssignableFrom(value.getClass()) ){
+            String text = (String)value;
+            if( text.isEmpty()){
+                return 0;
+            }
+            else {
+                if(text.contains(".")){
+                    return Integer.valueOf((text.split("\\."))[0]);
+                }
+                return Integer.valueOf(value.toString());
+            }
+        }
         return 0;
     }
 
