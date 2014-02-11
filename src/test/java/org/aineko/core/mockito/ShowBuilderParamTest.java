@@ -4,7 +4,6 @@ import org.aineko.core.HtmlReader;
 import org.aineko.core.Show;
 import org.aineko.core.ShowBuilder;
 import org.aineko.core.TestData;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
@@ -26,32 +25,24 @@ import static org.mockito.Mockito.when;
 /**
  * Created by Modulus on 23.01.14.
  */
-@Ignore
 @RunWith(Parameterized.class)
 public class ShowBuilderParamTest {
 
-    private Show expectedShow;
+    private Show excpectedShow;
     private Show actualShow;
 
 
     @Parameterized.Parameters
     public static Collection<Object[]> getParams(){
+        ShowBuilder builder;
+        HtmlReader reader;
+        reader = mock(HtmlReader.class);
+        List<Show> shows = null;
         try {
-
-            ShowBuilder builder;
-            //TODO 1: Create mock of reader
-            HtmlReader reader = null;
-
-            //TODO 2: Spesify behavior of reader
-
-            //Tips
-            //Root url for site: "http://www.dbtv.no"
-            //Show1 url: "http://www.dbtv.no?op=ContentTail&t=q&vid=s1&inapp=
-            //Show2 url: "http://www.dbtv.no?op=ContentTail&t=q&vid=s2&inapp=
-            //Show3 url: "http://www.dbtv.no?op=ContentTail&t=q&vid=s3&inapp=
-
-
-
+            when(reader.read(matches("http://www.dbtv.no"))).thenReturn(getRootMarkup());
+            when(reader.read(contains("&vid=s1"))).thenReturn(getEpisodeSeries1Markup());
+            when(reader.read(contains("&vid=s2"))).thenReturn(getEpisodeSeries2Markup());
+            when(reader.read(contains("&vid=s3"))).thenReturn(getEpisodeSeries3Markup());
             builder = new ShowBuilder();
 
             builder.appendReader(reader).
@@ -60,7 +51,7 @@ public class ShowBuilderParamTest {
                     appendIgnoreAttr("#serier").
                     appendUrl("http://www.dbtv.no");
 
-            List<Show> shows  = builder.build();
+            shows = builder.build();
             Object[][] data = new Object[][] {
                     { TestData.getSeries1(), shows.get(0)},
                     { TestData.getSeries2(), shows.get(1) },
@@ -77,7 +68,7 @@ public class ShowBuilderParamTest {
     }
 
     public ShowBuilderParamTest(Show expectedShow, Show actualShow){
-        this.expectedShow = expectedShow;
+        this.excpectedShow = expectedShow;
         this.actualShow = actualShow;
     }
 
@@ -88,17 +79,17 @@ public class ShowBuilderParamTest {
 
     @Test
     public void testEpisodesSize(){
-        assertEquals("Failed for show %s".format(actualShow.getName()), expectedShow.getEpisodes().size(), actualShow.getEpisodes().size());
+        assertEquals("Failed for show %s".format(actualShow.getName()), excpectedShow.getEpisodes().size(), actualShow.getEpisodes().size());
     }
 
     @Test
     public void testName(){
-        assertEquals(expectedShow.getName(), actualShow.getName());
+        assertEquals(excpectedShow.getName(), actualShow.getName() );
     }
 
     @Test
     public void test(){
-        assertEquals(expectedShow.getUrl(), actualShow.getUrl());
+        assertEquals(excpectedShow.getUrl(), actualShow.getUrl());
     }
 
 }

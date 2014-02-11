@@ -40,15 +40,13 @@ public class ShowBuilderTest {
 
     @Before
     public void setUp() throws MalformedURLException {
-        //TODO 1: Create mock of reader
+        reader = mock(HtmlReader.class);
 
-        //TODO 2: Spesify behavior of reader
-
-        //Tips
-        //Root url for site: "http://www.dbtv.no"
-        //Show1 url: "http://www.dbtv.no?op=ContentTail&t=q&vid=s1&inapp=
-        //Show2 url: "http://www.dbtv.no?op=ContentTail&t=q&vid=s2&inapp=
-        //Show3 url: "http://www.dbtv.no?op=ContentTail&t=q&vid=s3&inapp=
+        when(reader.read(matches("http://www.dbtv.no"))).thenReturn(getRootMarkup());
+        when(reader.read(contains("&vid=s1"))).thenReturn(getEpisodeSeries1Markup());
+        when(reader.read(contains("&vid=s2"))).thenReturn(getEpisodeSeries2Markup());
+        when(reader.read(argThat(new ContainsMatcher("&vid=s3")))).thenReturn(getEpisodeSeries3Markup());
+        when(reader.read(matches("exception"))).thenThrow(new MalformedURLException("Mocked exception"));
 
 
         builder = new ShowBuilder();
@@ -70,17 +68,16 @@ public class ShowBuilderTest {
             System.out.println(show);
         }
 
-        //TODO 3: Verify Reader's read method calld once with http://www.dbtv.no
+        //Verify Reader's read method calld once with http://www.dbtv.no
+        verify(reader, times(1)).read("http://www.dbtv.no");
 
+        //Verify Reader's read method called 4 times in total
+        verify(reader, times(4)).read(anyString());
 
-
-        //TODO 4: Verify Reader's read method called 4 times in total
-
-
-
-        //TODO: 5 Verify Reader's read method called 3 times for each of the shows
-
-
+        //Verify Reader's read method called 3 times for each of the shows
+        verify(reader, times(1)).read("http://www.dbtv.no?op=ContentTail&t=q&vid=s1&inapp=");
+        verify(reader, times(1)).read("http://www.dbtv.no?op=ContentTail&t=q&vid=s2&inapp=");
+        verify(reader, times(1)).read("http://www.dbtv.no?op=ContentTail&t=q&vid=s3&inapp=");
 
 
 

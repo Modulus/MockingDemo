@@ -4,7 +4,6 @@ import org.aineko.core.HtmlReader;
 import org.aineko.core.Show;
 import org.aineko.core.ShowBuilder;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
@@ -24,7 +23,6 @@ import static org.mockito.Mockito.*;
  * This is an exact copy of ShowBuilderTest, but with Mockito annotations
  */
 
-@Ignore
 //@RunWith(MockitoJUnitRunner.class)
 public class ShowBuilderAnnotationTest {
     private ShowBuilder builder;
@@ -37,8 +35,11 @@ public class ShowBuilderAnnotationTest {
     @Before
     public void setUp() throws MalformedURLException {
 
-//        MockitoAnnotations.initMocks(this);
-        //TODO: Spesify behaviour of reader
+        MockitoAnnotations.initMocks(this);
+        when(reader.read(matches("http://www.dbtv.no"))).thenReturn(getRootMarkup());
+        when(reader.read(contains("&vid=s1"))).thenReturn(getEpisodeSeries1Markup());
+        when(reader.read(contains("&vid=s2"))).thenReturn(getEpisodeSeries2Markup());
+        when(reader.read(matches("http://www.dbtv.no.*&vid=s3.*"))).thenReturn(getEpisodeSeries3Markup());
 
         builder = new ShowBuilder();
     }
@@ -55,14 +56,20 @@ public class ShowBuilderAnnotationTest {
 
         List<Show> shows = builder.build();
 
-        //TODO: Verify Reader's read method calld once with http://www.dbtv.no
+        //Verify Reader's read method calld once with http://www.dbtv.no
+        verify(reader, times(1)).read("http://www.dbtv.no");
 
+        //Verify Reader's read method called 4 times in total
+        verify(reader, times(4)).read(anyString());
+        verify(reader, atMost(4)).read(anyString());
 
-        //TODO: Verify Reader's read method called 4 times in total
+        //Verify Reader's read method called 3 times for each of the 3 shows
+        verify(reader, times(1)).read("http://www.dbtv.no?op=ContentTail&t=q&vid=s1&inapp=");
+        verify(reader, times(1)).read(matches(".*vid=s2.*"));
+        verify(reader, times(1)).read(matches("^http://www.dbtv.no.*&vid=s3.*"));
 
-
-        //TODO: Verify Reader's read method called 3 times for each of the 3 shows
-
+        verify(reader, atLeast(1)).read("http://www.dbtv.no?op=ContentTail&t=q&vid=s3&inapp=");
+        verify(reader, atMost(1)).read("http://www.dbtv.no?op=ContentTail&t=q&vid=s3&inapp=");
 
 
         assertEquals(shows.size(), 3);
