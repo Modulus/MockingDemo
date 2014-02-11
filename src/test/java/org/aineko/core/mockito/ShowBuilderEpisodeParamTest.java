@@ -32,17 +32,20 @@ public class ShowBuilderEpisodeParamTest {
     @Parameterized.Parameters
     public static Collection<Object[]> getParams(){
         ShowBuilder builder;
-        HtmlReader reader;
-        reader = mock(HtmlReader.class);
+
+        //TODO 1: Create mock for reader
+        HtmlReader reader =  null;
+
+
         List<Show> shows = null;
         try {
-            when(reader.read(matches("http://www.dbtv.no"))).thenReturn(getRootMarkup());
-            when(reader.read(contains("&vid=s1"))).thenReturn(getEpisodeSeries1Markup());
-            when(reader.read(contains("&vid=s2"))).thenReturn(getEpisodeSeries2Markup());
-            when(reader.read(contains("&vid=s3"))).thenReturn(getEpisodeSeries3Markup());
-            builder = new ShowBuilder();
 
-            builder.appendReader(reader).
+            //TODO 2: Spesify behavior
+
+
+
+            builder = new ShowBuilder()
+                    .appendReader(reader).
                     appendShowCollectionId("series").
                     appendShowTag("a").
                     appendIgnoreAttr("#serier").
