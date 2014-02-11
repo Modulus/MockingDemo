@@ -83,7 +83,7 @@ public class ShowBuilder {
 
 
                         Gson gson = new Gson();
-                        ArrayList<LinkedTreeMap> detailsList = gson.fromJson(showDetails, ArrayList.class);
+                        ArrayList<LinkedTreeMap<String, String>> detailsList = gson.fromJson(showDetails, ArrayList.class);
                         List<Episode> episodes = new ArrayList<Episode>();
                         for(LinkedTreeMap<String, String> map : detailsList){
                             Episode episode = new Episode();
