@@ -16,32 +16,38 @@ import static org.junit.Assert.assertEquals;
 @RunWith(Parameterized.class)
 public class ConverterUtilIntegerParamTest {
 
+    private final String actualString;
     private final Double actualDouble;
     private final int expectedTime;
 
     @Parameterized.Parameters
     public static Collection<Object[]> getParams(){
         return Arrays.asList(new Object[][]{
-                {null, 0},
-                {1.0, 1},
-                {1.5, 1},
-                {123.421, 123},
-                {421.09928123213124, 421},
-                {123213123.7899123798213, 123213123},
-                {98190218.2, 98190218},
-                {8908.98887, 8908},
+                {"", null, 0},
+                {"1", 1.0, 1},
+                {"1.5", 1.5, 1},
+                {"123.421", 123.421, 123},
+                {"421.0992812321312", 421.09928123213124, 421},
+                {"123213123.7899123798213", 123213123.7899123798213, 123213123},
+                {"98190218.2", 98190218.2, 98190218},
+                {"8908.98887", 8908.98887, 8908},
+                {"0", 0.0, 0},
+                {"0.0", 0.0, 0},
+
 
         });
     }
 
-    public ConverterUtilIntegerParamTest(Double actualDouble, int expectedInt){
+    public ConverterUtilIntegerParamTest(String actualString, Double actualDouble, int expectedInt){
+        this.actualString = actualString;
         this.actualDouble = actualDouble;
         this.expectedTime = expectedInt;
     }
 
     @Test
     public void testValues(){
-        assertEquals(ConvertUtil.toInteger(actualDouble), expectedTime);
+        assertEquals(String.format("Failed for value actual: %s, expected: %s",actualDouble, expectedTime ), ConvertUtil.toInteger(actualDouble), expectedTime);
+        assertEquals(String.format("Failed for value actual: %s, expected: %s",actualString, expectedTime ), ConvertUtil.toInteger(actualString), expectedTime);
     }
 
 
