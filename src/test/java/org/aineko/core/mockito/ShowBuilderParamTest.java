@@ -3,6 +3,7 @@ package org.aineko.core.mockito;
 import org.aineko.core.HtmlReader;
 import org.aineko.core.Show;
 import org.aineko.core.ShowBuilder;
+import org.aineko.core.TestData;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -11,6 +12,7 @@ import org.junit.runners.Parameterized;
 import java.net.MalformedURLException;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 
 import static org.aineko.core.TestData.*;
@@ -28,7 +30,9 @@ import static org.mockito.Mockito.when;
 @RunWith(Parameterized.class)
 public class ShowBuilderParamTest {
 
-    private Show show;
+    private Show expectedShow;
+    private Show actualShow;
+
 
     @Parameterized.Parameters
     public static Collection<Object[]> getParams(){
@@ -37,6 +41,8 @@ public class ShowBuilderParamTest {
         reader = mock(HtmlReader.class);
         List<Show> shows = null;
         try {
+
+
             builder = new ShowBuilder();
 
             builder.appendReader(reader).
@@ -46,30 +52,44 @@ public class ShowBuilderParamTest {
                     appendUrl("http://www.dbtv.no");
 
             shows = builder.build();
+            Object[][] data = new Object[][] {
+                    { TestData.getSeries1(), shows.get(0)},
+                    { TestData.getSeries2(), shows.get(1) },
+                    { TestData.getSeries3(), shows.get(2) }};
 
-            throw new MalformedURLException();
+            return Arrays.asList(data);
 
         } catch (MalformedURLException e) {
             e.printStackTrace();
         }
 
-        Object[][] data = new Object[][] { { shows.get(0) }, { shows.get(1) }, { shows.get(2) }};
+        return Collections.emptyList();
 
-        return Arrays.asList(data);
     }
 
-    public ShowBuilderParamTest(Show currentShow){
-        this.show = currentShow;
+    public ShowBuilderParamTest(Show expectedShow, Show actualShow){
+        this.expectedShow = expectedShow;
+        this.actualShow = actualShow;
     }
 
     @Test
     public void verifyShow(){
-        assertNotNull(show);
+        assertNotNull(actualShow);
     }
 
     @Test
-    public void verifyEpisodes(){
-        assertEquals("Failed for show %s".format(show.getName()), 3, show.getEpisodes().size());
+    public void testEpisodesSize(){
+        assertEquals("Failed for show %s".format(actualShow.getName()), expectedShow.getEpisodes().size(), actualShow.getEpisodes().size());
+    }
+
+    @Test
+    public void testName(){
+        assertEquals(expectedShow.getName(), actualShow.getName());
+    }
+
+    @Test
+    public void test(){
+        assertEquals(expectedShow.getUrl(), actualShow.getUrl());
     }
 
 }

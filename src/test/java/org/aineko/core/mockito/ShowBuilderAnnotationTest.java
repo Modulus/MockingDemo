@@ -23,6 +23,7 @@ import static org.mockito.Mockito.*;
  * Created by Modulus on 22.01.14.
  * This is an exact copy of ShowBuilderTest, but with Mockito annotations
  */
+
 @Ignore
 //@RunWith(MockitoJUnitRunner.class)
 public class ShowBuilderAnnotationTest {
@@ -37,11 +38,10 @@ public class ShowBuilderAnnotationTest {
     public void setUp() throws MalformedURLException {
 
 //        MockitoAnnotations.initMocks(this);
-
+        //TODO: Spesify behaviour of reader
 
         builder = new ShowBuilder();
     }
-
 
 
     @Test
@@ -54,6 +54,14 @@ public class ShowBuilderAnnotationTest {
                 appendUrl("http://www.dbtv.no");
 
         List<Show> shows = builder.build();
+
+        //TODO: Verify Reader's read method calld once with http://www.dbtv.no
+
+
+        //TODO: Verify Reader's read method called 4 times in total
+
+
+        //TODO: Verify Reader's read method called 3 times for each of the 3 shows
 
 
 
