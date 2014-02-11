@@ -88,7 +88,7 @@ public class ShowBuilderEpisodeParamTest {
         assertNotNull(expectedEpisode);
     }
 
-//    TODO: FIX THIS!!
+
     @Test
     public void testId(){
         assertEquals(expectedEpisode.getId(), actualEpisode.getId());
