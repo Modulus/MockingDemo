@@ -44,6 +44,12 @@ public class ShowBuilderTest {
 
         //TODO 2: Spesify behavior of reader
 
+        //Tips
+        //Root url for site: "http://www.dbtv.no"
+        //Show1 url: "http://www.dbtv.no?op=ContentTail&t=q&vid=s1&inapp=
+        //Show2 url: "http://www.dbtv.no?op=ContentTail&t=q&vid=s2&inapp=
+        //Show3 url: "http://www.dbtv.no?op=ContentTail&t=q&vid=s3&inapp=
+
 
         builder = new ShowBuilder();
     }

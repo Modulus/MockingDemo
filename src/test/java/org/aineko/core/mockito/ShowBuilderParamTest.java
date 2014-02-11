@@ -36,11 +36,20 @@ public class ShowBuilderParamTest {
 
     @Parameterized.Parameters
     public static Collection<Object[]> getParams(){
-        ShowBuilder builder;
-        HtmlReader reader;
-        reader = mock(HtmlReader.class);
-        List<Show> shows = null;
         try {
+
+            ShowBuilder builder;
+            //TODO 1: Create mock of reader
+            HtmlReader reader = null;
+
+            //TODO 2: Spesify behavior of reader
+
+            //Tips
+            //Root url for site: "http://www.dbtv.no"
+            //Show1 url: "http://www.dbtv.no?op=ContentTail&t=q&vid=s1&inapp=
+            //Show2 url: "http://www.dbtv.no?op=ContentTail&t=q&vid=s2&inapp=
+            //Show3 url: "http://www.dbtv.no?op=ContentTail&t=q&vid=s3&inapp=
+
 
 
             builder = new ShowBuilder();
@@ -51,7 +60,7 @@ public class ShowBuilderParamTest {
                     appendIgnoreAttr("#serier").
                     appendUrl("http://www.dbtv.no");
 
-            shows = builder.build();
+            List<Show> shows  = builder.build();
             Object[][] data = new Object[][] {
                     { TestData.getSeries1(), shows.get(0)},
                     { TestData.getSeries2(), shows.get(1) },
